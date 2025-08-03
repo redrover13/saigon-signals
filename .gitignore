@@ -1,0 +1,43 @@
+# Node
+node_modules
+.env
+.next
+/dist
+/tmp
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage
+coverage
+*.lcov
+
+# Nx
+.nx/cache
+.nx/workspace-data
+
+# Build outputs
+build/
+out/
+
+# GCP
+gcp-key.json
+service-account.json
+
+# Testing
+.nyc_output
