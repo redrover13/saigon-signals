@@ -13,8 +13,8 @@ module.exports = {
     {
       files: '*.json',
       options: {
-        printWidth: 80
-      }
-    }
-  ]
+        printWidth: 80,
+      },
+    },
+  ],
 };

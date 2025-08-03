@@ -2,7 +2,7 @@ module.exports = {
   testEnvironment: 'node',
   preset: 'ts-jest',
   transform: {
-    '^.+\\.tsx?$': 'ts-jest'
+    '^.+\\.tsx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   testMatch: ['**/__tests__/**/*.(ts|tsx|js)', '**/*.(test|spec).(ts|tsx|js)'],
@@ -12,12 +12,12 @@ module.exports = {
     '!**/*.d.ts',
     '!**/node_modules/**',
     '!**/*.config.{js,ts}',
-    '!**/coverage/**'
+    '!**/coverage/**',
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapping: {
-    '^@saigon-signals/(.*)$': '<rootDir>/libs/$1/src'
-  }
+    '^@saigon-signals/(.*)$': '<rootDir>/libs/$1/src',
+  },
 };

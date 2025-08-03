@@ -1,8 +1,5 @@
 module.exports = {
-  content: [
-    './apps/**/*.{js,ts,jsx,tsx}',
-    './libs/**/*.{js,ts,jsx,tsx}'
-  ],
+  content: ['./apps/**/*.{js,ts,jsx,tsx}', './libs/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -11,20 +8,20 @@ module.exports = {
           500: '#3b82f6',
           600: '#2563eb',
           700: '#1d4ed8',
-          900: '#1e3a8a'
+          900: '#1e3a8a',
         },
         secondary: {
           50: '#f8fafc',
           500: '#64748b',
           600: '#475569',
           700: '#334155',
-          900: '#0f172a'
-        }
+          900: '#0f172a',
+        },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif']
-      }
-    }
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 };

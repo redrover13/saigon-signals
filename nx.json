@@ -7,13 +7,7 @@
     "appsDir": "apps",
     "libsDir": "libs"
   },
-  "implicitDependencies": {
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
-    ".eslintrc.json": "*"
-  },
+
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
@@ -35,7 +29,10 @@
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/jest.config.[jt]s"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": [
+      "{workspaceRoot}/package.json",
+      "{workspaceRoot}/.eslintrc.json"
+    ]
   },
   "generators": {
     "@nx/react": {
@@ -58,6 +55,5 @@
         "linter": "eslint"
       }
     }
-  },
-  "defaultProject": "web"
+  }
 }

@@ -1,11 +1,13 @@
 # AI Coding Guidelines for Saigon Signals
 
 ## Purpose
+
 AI tools (Copilot, Kilocode, GPT, etc.) are to **accelerate development and augment code quality**, but must follow strict project standards.
 
 ## Expectations
 
 ### 1. Technology Stack Adherence
+
 - **Frontend**: Next.js 14+, React 18+, TypeScript 5+, Tailwind CSS 3+
 - **Backend**: Node.js 18+, TypeScript, Express
 - **Cloud**: Google Cloud Platform (BigQuery, Firestore, Pub/Sub, Vertex AI)
@@ -13,6 +15,7 @@ AI tools (Copilot, Kilocode, GPT, etc.) are to **accelerate development and augm
 - **Quality**: ESLint, Prettier, Jest, Husky, lint-staged
 
 ### 2. Code Quality Standards
+
 - All code must be **production-ready** with proper error handling
 - Follow **TypeScript strict mode** - no `any` types without justification
 - Use **conventional commits** for all changes
@@ -20,6 +23,7 @@ AI tools (Copilot, Kilocode, GPT, etc.) are to **accelerate development and augm
 - Follow **SOLID principles** and clean architecture patterns
 
 ### 3. Nx Monorepo Structure
+
 ```
 apps/
   ├── web/          # Next.js main application
@@ -33,6 +37,7 @@ libs/
 ```
 
 ### 4. GCP Integration Requirements
+
 - Use **official Google Cloud SDK** packages only
 - Implement proper **authentication** and **authorization**
 - Follow **GCP best practices** for each service:
@@ -42,6 +47,7 @@ libs/
   - Vertex AI: Use proper model versioning and monitoring
 
 ### 5. Security & Environment
+
 - Never hardcode **secrets** or **credentials**
 - Use **environment variables** for all configuration
 - Implement proper **input validation** and **sanitization**
@@ -49,6 +55,7 @@ libs/
 - Use **HTTPS** for all external communications
 
 ### 6. UI/UX Standards
+
 - Use **Tailwind CSS** with consistent design tokens
 - Implement **responsive design** (mobile-first)
 - Follow **accessibility** guidelines (WCAG 2.1 AA)
@@ -56,6 +63,7 @@ libs/
 - Implement **loading states** and **error boundaries**
 
 ### 7. Performance & Monitoring
+
 - Implement **proper logging** with structured data
 - Use **performance monitoring** and **error tracking**
 - Follow **Core Web Vitals** best practices
@@ -63,6 +71,7 @@ libs/
 - Use **lazy loading** and **code splitting**
 
 ### 8. Prohibited Practices
+
 - ❌ No fantasy APIs or non-existent endpoints
 - ❌ No hardcoded values or magic numbers
 - ❌ No console.log in production code
@@ -72,6 +81,7 @@ libs/
 - ❌ No bypassing TypeScript type checking
 
 ### 9. Required Documentation
+
 - **JSDoc comments** for all public APIs
 - **README.md** for each app and library
 - **API documentation** using OpenAPI/Swagger
@@ -79,6 +89,7 @@ libs/
 - **Architecture decision records** (ADRs) for major decisions
 
 ### 10. Testing Requirements
+
 - **Unit tests** for all business logic (>80% coverage)
 - **Integration tests** for API endpoints
 - **E2E tests** for critical user journeys
@@ -88,25 +99,30 @@ libs/
 ## AI Tool Usage Guidelines
 
 ### For Code Generation
+
 1. **Specify context**: Always provide relevant file structure and dependencies
 2. **Request tests**: Ask for corresponding test files
 3. **Validate output**: Review generated code for compliance with these guidelines
 4. **Iterate incrementally**: Make small, focused changes
 
 ### For Code Review
+
 1. **Check standards**: Verify adherence to project conventions
 2. **Security review**: Look for potential vulnerabilities
 3. **Performance review**: Identify optimization opportunities
 4. **Documentation review**: Ensure proper documentation
 
 ### For Debugging
+
 1. **Provide context**: Share relevant error messages and logs
 2. **Include environment**: Specify Node.js version, dependencies
 3. **Share test cases**: Provide failing test scenarios
 4. **Request explanations**: Ask for debugging reasoning
 
 ## Enforcement
+
 These guidelines are enforced through:
+
 - **ESLint rules** and **Prettier formatting**
 - **Pre-commit hooks** with Husky and lint-staged
 - **CI/CD pipeline** checks
