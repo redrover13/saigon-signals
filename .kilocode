@@ -1,0 +1,23 @@
+{
+  "project": "Saigon Signals",
+  "purpose": "Enforce strict guidelines for AI-assisted coding to prevent fantasy/hallucination and maximize Nx, GCP, and SaaS best practices.",
+  "rules": [
+    "AI suggestions must follow Nx, Next.js, and TypeScript best practices.",
+    "Tailwind CSS must be used for UI, referencing shared-ui and design tokens.",
+    "All code must be production-ready with proper error handling and testing.",
+    "GCP services integration must follow official SDK patterns and best practices.",
+    "No fantasy APIs, endpoints, or services - only implement what exists.",
+    "Use conventional commits and follow semantic versioning.",
+    "All imports must be properly typed and from legitimate packages.",
+    "Follow the established monorepo structure: apps/* for applications, libs/* for shared libraries.",
+    "Implement proper logging, monitoring, and observability patterns.",
+    "Security-first approach: validate inputs, sanitize outputs, use environment variables for secrets."
+  ],
+  "technologies": {
+    "frontend": ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    "backend": ["Node.js", "TypeScript", "Express"],
+    "cloud": ["Google Cloud Platform", "BigQuery", "Firestore", "Pub/Sub", "Vertex AI"],
+    "tools": ["Nx", "pnpm", "ESLint", "Prettier", "Jest", "Husky"],
+    "deployment": ["Docker", "Cloud Run", "GitHub Actions"]
+  }
+}
