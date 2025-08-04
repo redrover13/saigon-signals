@@ -5,7 +5,7 @@
  * @license MIT
  */
 
-import { GoogleAuth } from 'google-auth-library';
+import { GoogleAuth } from "google-auth-library";
 
 /**
  * Creates an authenticated client for Google Cloud services
@@ -16,7 +16,7 @@ export async function createAuthClient(scopes: string | string[] = []) {
   const auth = new GoogleAuth({
     scopes: Array.isArray(scopes) ? scopes : [scopes],
   });
-  
+
   return auth.getClient();
 }
 
@@ -34,17 +34,19 @@ export async function getProjectId(): Promise<string> {
  * @param scopes - The scopes required for the token
  * @returns The access token
  */
-export async function getAccessToken(scopes: string | string[] = []): Promise<string> {
+export async function getAccessToken(
+  scopes: string | string[] = []
+): Promise<string> {
   const auth = new GoogleAuth({
     scopes: Array.isArray(scopes) ? scopes : [scopes],
   });
-  
+
   const client = await auth.getClient();
   const token = await client.getAccessToken();
-  
+
   if (!token.token) {
-    throw new Error('Failed to retrieve access token');
+    throw new Error("Failed to retrieve access token");
   }
-  
+
   return token.token;
 }

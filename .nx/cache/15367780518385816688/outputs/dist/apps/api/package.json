@@ -1,8 +1,0 @@
-{
-  "name": "api",
-  "version": "0.0.1",
-  "pnpm": {
-    "overrides": {}
-  },
-  "main": "main.js"
-}

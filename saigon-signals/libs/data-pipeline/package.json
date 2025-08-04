@@ -1,0 +1,11 @@
+{
+  "name": "@saigon-signals/data-pipeline",
+  "version": "0.0.1",
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "typescript": "^5.4.5"
+  }
+}
