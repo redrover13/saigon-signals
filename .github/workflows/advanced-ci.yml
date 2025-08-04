@@ -27,6 +27,9 @@ jobs:
   prepare:
     name: 🔧 Prepare Workspace
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: saigon-signals
     outputs:
       cache-key: ${{ steps.cache-key.outputs.value }}
       affected-apps: ${{ steps.affected.outputs.apps }}
@@ -64,18 +67,15 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        working-directory: saigon-signals
 
-      - name: Check if "saigon-signals" exists as a subdirectory and remove it
-        run: |
-          if [ -d "saigon-signals" ]; then
-            echo "::warning::'saigon-signals' subdirectory detected. Removing it to align monorepo root."
-            rm -rf saigon-signals
-          fi
+      # - name: Check for redundant structure
+      #   run: |
+      #     if [ -d "saigon-signals/saigon-signals" ]; then
+      #       echo "::warning::Redundant folder structure detected"
+      #     fi
 
       - name: Determine affected projects
         id: affected
-        working-directory: saigon-signals
         run: |
           # For first runs or in case of Git history issues, use HEAD~1 or just build all
           AFFECTED_APPS=$(pnpm nx affected:apps --base=HEAD~1 --head=HEAD --plain || echo "all")
@@ -89,6 +89,9 @@ jobs:
     name: 🔍 Quality Checks
     needs: prepare
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: saigon-signals
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -114,11 +117,9 @@ jobs:
 
       - name: Lint
         run: pnpm nx run-many --target=lint --all --parallel=3
-        working-directory: saigon-signals
 
       - name: Format check
         run: pnpm nx format:check || echo "Format check failed, but continuing build"
-        working-directory: saigon-signals
 
       # Disable security check until Snyk is properly configured
       - name: Check for vulnerabilities
@@ -129,6 +130,9 @@ jobs:
     name: 🧪 Tests
     needs: prepare
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: saigon-signals
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -154,7 +158,6 @@ jobs:
 
       - name: Run unit tests
         run: pnpm nx run-many --target=test --all --parallel=3 --coverage
-        working-directory: saigon-signals
 
       # Disable codecov until token is configured
       - name: Upload coverage reports
@@ -168,6 +171,9 @@ jobs:
     name: 🔨 Build
     needs: [prepare, quality, test]
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: saigon-signals
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -193,7 +199,6 @@ jobs:
 
       - name: Build all projects
         run: pnpm nx run-many --target=build --all --parallel=3
-        working-directory: saigon-signals
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v4
@@ -208,6 +213,9 @@ jobs:
     name: 🧪 E2E Tests
     needs: [build]
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: saigon-signals
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -239,7 +247,6 @@ jobs:
 
       - name: Run E2E tests
         run: pnpm nx run-many --target=e2e --all
-        working-directory: saigon-signals
         env:
           CI: true
 
@@ -277,7 +284,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: . # Build context is the repository root
           file: ./apps/${{ matrix.app }}/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ matrix.app }}:${{ github.sha }},${{ env.REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ matrix.app }}:latest
