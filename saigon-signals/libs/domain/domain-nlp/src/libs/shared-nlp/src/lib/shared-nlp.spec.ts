@@ -68,7 +68,7 @@ describe('NlpService', () => {
       };
       await expect(nlpService.analyzeSentiment(request)).rejects.toHaveProperty(
         'code',
-        NlpErrorCode.INVALID_INPUT
+        NlpErrorCode.INVALID_INPUT,
       );
     });
 
@@ -79,7 +79,7 @@ describe('NlpService', () => {
       };
       await expect(nlpService.analyzeSentiment(request)).rejects.toHaveProperty(
         'code',
-        NlpErrorCode.UNSUPPORTED_LANGUAGE
+        NlpErrorCode.UNSUPPORTED_LANGUAGE,
       );
     });
   });
@@ -97,15 +97,19 @@ describe('NlpService', () => {
       expect(response.entities).toBeDefined();
       expect(response.entities.length).toBeGreaterThan(0);
 
-      const phoBo = response.entities.find(e => e.name.includes('phở bò'));
+      const phoBo = response.entities.find((e) => e.name.includes('phở bò'));
       expect(phoBo).toBeDefined();
       expect(phoBo?.type).toEqual(EntityType.FOOD);
 
-      const cafeSuaDa = response.entities.find(e => e.name.includes('cà phê sữa đá'));
+      const cafeSuaDa = response.entities.find((e) =>
+        e.name.includes('cà phê sữa đá'),
+      );
       expect(cafeSuaDa).toBeDefined();
       expect(cafeSuaDa?.type).toEqual(EntityType.FOOD);
 
-      const benThanh = response.entities.find(e => e.name.includes('chợ Bến Thành'));
+      const benThanh = response.entities.find((e) =>
+        e.name.includes('chợ Bến Thành'),
+      );
       expect(benThanh).toBeDefined();
       expect(benThanh?.type).toEqual(EntityType.LOCATION);
     });
@@ -117,7 +121,7 @@ describe('NlpService', () => {
       };
       await expect(nlpService.extractEntities(request)).rejects.toHaveProperty(
         'code',
-        NlpErrorCode.INVALID_INPUT
+        NlpErrorCode.INVALID_INPUT,
       );
     });
   });
@@ -165,7 +169,7 @@ describe('NlpService', () => {
         minConfidence: 0.9,
       };
       const response = await nlpService.classifyText(request);
-      
+
       expect(response.categories[0]?.confidence).toBeGreaterThanOrEqual(0.9);
     });
 
@@ -174,26 +178,25 @@ describe('NlpService', () => {
         text: null, // Invalid input
         language: Language.VIETNAMESE,
       };
-      await expect(nlpService.classifyText(request as any)).rejects.toHaveProperty(
-        'code',
-        NlpErrorCode.INVALID_INPUT
-      );
+      await expect(
+        nlpService.classifyText(request as any),
+      ).rejects.toHaveProperty('code', NlpErrorCode.INVALID_INPUT);
     });
   });
 
   describe('Error Handling and Edge Cases', () => {
     it('should handle unexpected errors during sentiment analysis', async () => {
       // Temporarily nullify the client to simulate a service error
-      (nlpService as any).client = null; 
-      
+      (nlpService as any).client = null;
+
       const request = {
         text: 'Some text',
         language: Language.ENGLISH,
       };
-      
+
       // Re-initialize client after the test to not affect others
       await nlpService.init();
-      
+
       // Now test with a valid request to ensure it works after re-initialization
       const response = await nlpService.analyzeSentiment(request);
       expect(response).toBeDefined();

@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
 // Reading the SWC compilation config and remove the "exclude"
 // for the test files to be compiled by SWC
 const { exclude: _, ...swcJestConfig } = JSON.parse(
-  readFileSync(`${__dirname}/.swcrc`, 'utf-8')
+  readFileSync(`${__dirname}/.swcrc`, 'utf-8'),
 );
 
 // disable .swcrc look-up by SWC core because we're passing in swcJestConfig ourselves.
@@ -23,7 +23,16 @@ export default {
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.[tj]s$': ['@swc/jest', { jsc: { parser: { syntax: 'typescript', tsx: false }, transform: { react: { pragma: 'React' } }, target: 'esnext' } }]
+    '^.+\\.[tj]s$': [
+      '@swc/jest',
+      {
+        jsc: {
+          parser: { syntax: 'typescript', tsx: false },
+          transform: { react: { pragma: 'React' } },
+          target: 'esnext',
+        },
+      },
+    ],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/libs/shared-nlp',

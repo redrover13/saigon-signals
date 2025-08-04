@@ -165,11 +165,16 @@ export const GOOGLE_CLOUD_REGION = 'asia-southeast1'; // Singapore region (close
  * Based on Vietnam's Law on Cyber Information Security and Personal Data Protection Decree
  */
 export const VIETNAMESE_DATA_PRIVACY_NOTES = {
-  PERSONAL_DATA_DEFINITION: 'Personal data includes name, date of birth, phone number, email address, ID card number, personal health information, and biometric data.',
-  CONSENT_REQUIREMENT: 'Explicit consent is required before collecting, processing, or transferring personal data.',
+  PERSONAL_DATA_DEFINITION:
+    'Personal data includes name, date of birth, phone number, email address, ID card number, personal health information, and biometric data.',
+  CONSENT_REQUIREMENT:
+    'Explicit consent is required before collecting, processing, or transferring personal data.',
   DATA_LOCALIZATION: 'Certain types of data must be stored in Vietnam.',
   DATA_TRANSFER: 'Cross-border data transfers may require regulatory approval.',
-  DATA_BREACH: 'Data breaches must be reported to authorities and affected individuals.',
-  DATA_RETENTION: 'Personal data should only be retained for the necessary period.',
-  DATA_SECURITY: 'Appropriate technical and organizational measures must be implemented to protect personal data.',
+  DATA_BREACH:
+    'Data breaches must be reported to authorities and affected individuals.',
+  DATA_RETENTION:
+    'Personal data should only be retained for the necessary period.',
+  DATA_SECURITY:
+    'Appropriate technical and organizational measures must be implemented to protect personal data.',
 };

@@ -3,14 +3,14 @@
  * This file contains helper functions for validation, error handling, and other common tasks.
  */
 
-import { 
-  Language, 
-  NlpError, 
-  NlpErrorCode, 
+import {
+  Language,
+  NlpError,
+  NlpErrorCode,
   NlpRequestBase,
   SentimentAnalysisRequest,
   EntityExtractionRequest,
-  TextClassificationRequest
+  TextClassificationRequest,
 } from './types';
 import { DEFAULT_LANGUAGE, DEFAULT_TIMEOUT_MS } from './constants';
 
@@ -37,7 +37,9 @@ export function isValidLanguage(language: unknown): language is Language {
  * @param request - The request to validate
  * @returns An error object if validation fails, undefined otherwise
  */
-export function validateNlpRequest(request: NlpRequestBase): NlpError | undefined {
+export function validateNlpRequest(
+  request: NlpRequestBase,
+): NlpError | undefined {
   if (!request) {
     return {
       code: NlpErrorCode.INVALID_INPUT,
@@ -59,10 +61,10 @@ export function validateNlpRequest(request: NlpRequestBase): NlpError | undefine
     };
   }
 
-  if (request.timeoutMs !== undefined && (
-    typeof request.timeoutMs !== 'number' || 
-    request.timeoutMs <= 0
-  )) {
+  if (
+    request.timeoutMs !== undefined &&
+    (typeof request.timeoutMs !== 'number' || request.timeoutMs <= 0)
+  ) {
     return {
       code: NlpErrorCode.INVALID_INPUT,
       message: 'Timeout must be a positive number',
@@ -82,7 +84,7 @@ export function validateNlpRequest(request: NlpRequestBase): NlpError | undefine
 export function createBaseRequest(
   text: string,
   language: Language = DEFAULT_LANGUAGE,
-  timeoutMs: number = DEFAULT_TIMEOUT_MS
+  timeoutMs: number = DEFAULT_TIMEOUT_MS,
 ): NlpRequestBase {
   return {
     text,
@@ -98,7 +100,7 @@ export function createBaseRequest(
  * @param analyzeSentences - Whether to analyze sentiment at the sentence level
  * @param timeoutMs - The request timeout in milliseconds
  * @returns A sentiment analysis request object
- * 
+ *
  * @example
  * ```typescript
  * // Create a request to analyze sentiment in Vietnamese text
@@ -113,7 +115,7 @@ export function createSentimentRequest(
   text: string,
   language: Language = DEFAULT_LANGUAGE,
   analyzeSentences: boolean = false,
-  timeoutMs: number = DEFAULT_TIMEOUT_MS
+  timeoutMs: number = DEFAULT_TIMEOUT_MS,
 ): SentimentAnalysisRequest {
   return {
     ...createBaseRequest(text, language, timeoutMs),
@@ -129,7 +131,7 @@ export function createSentimentRequest(
  * @param minConfidence - Minimum confidence score for extracted entities
  * @param timeoutMs - The request timeout in milliseconds
  * @returns An entity extraction request object
- * 
+ *
  * @example
  * ```typescript
  * // Create a request to extract food entities from Vietnamese text
@@ -146,7 +148,7 @@ export function createEntityExtractionRequest(
   language: Language = DEFAULT_LANGUAGE,
   entityTypes?: string[],
   minConfidence?: number,
-  timeoutMs: number = DEFAULT_TIMEOUT_MS
+  timeoutMs: number = DEFAULT_TIMEOUT_MS,
 ): EntityExtractionRequest {
   return {
     ...createBaseRequest(text, language, timeoutMs),
@@ -163,7 +165,7 @@ export function createEntityExtractionRequest(
  * @param minConfidence - Minimum confidence score for categories
  * @param timeoutMs - The request timeout in milliseconds
  * @returns A text classification request object
- * 
+ *
  * @example
  * ```typescript
  * // Create a request to classify Vietnamese text
@@ -180,7 +182,7 @@ export function createTextClassificationRequest(
   language: Language = DEFAULT_LANGUAGE,
   maxCategories?: number,
   minConfidence?: number,
-  timeoutMs: number = DEFAULT_TIMEOUT_MS
+  timeoutMs: number = DEFAULT_TIMEOUT_MS,
 ): TextClassificationRequest {
   return {
     ...createBaseRequest(text, language, timeoutMs),
@@ -207,19 +209,21 @@ export function createTimestamp(): string {
 export function formatError(
   error: unknown,
   code: NlpErrorCode = NlpErrorCode.UNKNOWN_ERROR,
-  message?: string
+  message?: string,
 ): NlpError {
   // If the error is already an NlpError, return it
-  if (typeof error === 'object' && 
-      error !== null && 
-      'code' in error && 
-      'message' in error) {
+  if (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    'message' in error
+  ) {
     return error as NlpError;
   }
 
   // Format the error message
   let errorMessage = message || 'An unknown error occurred';
-  
+
   if (error instanceof Error) {
     errorMessage = message || error.message;
   } else if (typeof error === 'string') {
@@ -240,11 +244,13 @@ export function formatError(
  */
 export function isLikelyVietnamese(text: string): boolean {
   // Vietnamese-specific characters
-  const vietnameseChars = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
-  
+  const vietnameseChars =
+    /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
+
   // Vietnamese-specific words (common short words)
-  const vietnameseWords = /\b(và|hoặc|của|trong|với|là|có|không|này|đó|một|hai|ba|bốn|năm)\b/i;
-  
+  const vietnameseWords =
+    /\b(và|hoặc|của|trong|với|là|có|không|này|đó|một|hai|ba|bốn|năm)\b/i;
+
   // Check for Vietnamese characters or words
   return vietnameseChars.test(text) || vietnameseWords.test(text);
 }
@@ -272,7 +278,7 @@ export function truncateText(text: string, maxLength: number = 5000): string {
   if (text.length <= maxLength) {
     return text;
   }
-  
+
   return text.substring(0, maxLength);
 }
 
@@ -287,8 +293,8 @@ export function splitIntoSentences(text: string): string[] {
   return text
     .replace(/([.!?])\s+/g, '$1\n')
     .split('\n')
-    .map(s => s.trim())
-    .filter(s => s.length > 0);
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
 }
 
 /**

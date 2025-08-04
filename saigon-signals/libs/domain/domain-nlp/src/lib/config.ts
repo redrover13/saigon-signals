@@ -5,12 +5,12 @@
  */
 
 import { NlpServiceConfig, NlpServiceProvider } from './types';
-import { 
-  DEFAULT_TIMEOUT_MS, 
-  DEFAULT_MAX_RETRIES, 
+import {
+  DEFAULT_TIMEOUT_MS,
+  DEFAULT_MAX_RETRIES,
   DEFAULT_SERVICE_PROVIDER,
   GOOGLE_CLOUD_REGION,
-  VERTEX_AI_MODELS
+  VERTEX_AI_MODELS,
 } from './constants';
 
 /**
@@ -70,7 +70,9 @@ export const GOOGLE_CLOUD_NLP_CONFIG: NlpServiceConfig = {
  * @param provider - The NLP service provider
  * @returns The configuration for the specified provider
  */
-export function getNlpServiceConfig(provider: NlpServiceProvider): NlpServiceConfig {
+export function getNlpServiceConfig(
+  provider: NlpServiceProvider,
+): NlpServiceConfig {
   switch (provider) {
     case NlpServiceProvider.VERTEX_AI:
       return VERTEX_AI_CONFIG;
@@ -110,13 +112,13 @@ export const ENV_VARS = {
 export function loadConfigFromEnv(): NlpServiceConfig {
   // Determine provider from environment variable or use default
   const providerStr = process.env[ENV_VARS.NLP_SERVICE_PROVIDER];
-  const provider = providerStr 
-    ? (providerStr as NlpServiceProvider) 
+  const provider = providerStr
+    ? (providerStr as NlpServiceProvider)
     : DEFAULT_SERVICE_PROVIDER;
-  
+
   // Get base configuration for the provider
   const config = getNlpServiceConfig(provider);
-  
+
   // Override with environment variables if provided
   if (process.env[ENV_VARS.GOOGLE_CLOUD_PROJECT]) {
     config.options = {
@@ -124,35 +126,32 @@ export function loadConfigFromEnv(): NlpServiceConfig {
       projectId: process.env[ENV_VARS.GOOGLE_CLOUD_PROJECT],
     };
   }
-  
+
   if (process.env[ENV_VARS.GOOGLE_CLOUD_REGION]) {
     config.options = {
       ...config.options,
       region: process.env[ENV_VARS.GOOGLE_CLOUD_REGION],
     };
   }
-  
+
   if (process.env[ENV_VARS.NLP_API_KEY]) {
     config.credentials = process.env[ENV_VARS.NLP_API_KEY];
   }
-  
+
   if (process.env[ENV_VARS.NLP_API_ENDPOINT]) {
     config.endpoint = process.env[ENV_VARS.NLP_API_ENDPOINT];
   }
-  
+
   if (process.env[ENV_VARS.NLP_REQUEST_TIMEOUT_MS]) {
     config.defaultTimeoutMs = parseInt(
       process.env[ENV_VARS.NLP_REQUEST_TIMEOUT_MS],
-      10
+      10,
     );
   }
-  
+
   if (process.env[ENV_VARS.NLP_MAX_RETRIES]) {
-    config.maxRetries = parseInt(
-      process.env[ENV_VARS.NLP_MAX_RETRIES],
-      10
-    );
+    config.maxRetries = parseInt(process.env[ENV_VARS.NLP_MAX_RETRIES], 10);
   }
-  
+
   return config;
 }

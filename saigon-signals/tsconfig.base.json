@@ -18,8 +18,12 @@
     "target": "es2022",
     "customConditions": ["development"],
     "paths": {
-      "@dulce-de-saigon/shared-utils": ["libs/shared/shared-utils/src/index.ts"],
-      "@dulce-de-saigon/shared-types": ["libs/shared/shared-types/src/index.ts"],
+      "@dulce-de-saigon/shared-utils": [
+        "libs/shared/shared-utils/src/index.ts"
+      ],
+      "@dulce-de-saigon/shared-types": [
+        "libs/shared/shared-types/src/index.ts"
+      ],
       "@dulce-de-saigon/gcp-core": ["libs/gcp/gcp-core/src/index.ts"],
       "@dulce-de-saigon/gcp-vertex-ai": ["libs/gcp/gcp-vertex-ai/src/index.ts"],
       "@dulce-de-saigon/gcp-firestore": ["libs/gcp/gcp-firestore/src/index.ts"],

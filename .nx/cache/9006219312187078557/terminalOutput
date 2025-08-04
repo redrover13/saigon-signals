@@ -1,0 +1,8 @@
+[2m> [22meslint .
+
+[0m[0m
+[0m[4m/workspaces/saigon-signals/web/jest.config.ts[24m[0m
+[0m  [2m1:1[22m  [33mwarning[39m  Assign object to a variable before exporting as module default  [2mimport/no-anonymous-default-export[22m[0m
+[0m[0m
+[0m[33m[1m✖ 1 problem (0 errors, 1 warning)[22m[39m[0m
+[0m[33m[1m[22m[39m[0m
