@@ -1,0 +1,34 @@
+{
+  "name": "Saigon Signals GCP Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "ms-azuretools.vscode-docker",
+        "GitHub.copilot",
+        "ms-vscode.js-debug",
+        "nrwl.angular-console",
+        "GoogleCloudTools.cloudcode",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker",
+        "editorconfig.editorconfig",
+        "github.vscode-pull-request-github"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "remoteUser": "node",
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/home/node/.local/share/pnpm"
+  },
+  "postCreateCommand": "pnpm install"
+}

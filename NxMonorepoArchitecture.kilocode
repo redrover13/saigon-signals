@@ -1,0 +1,191 @@
+# Nx Monorepo Architecture for Dulce de Saigon
+
+This document outlines the recommended architecture and workflow for managing the Dulce de Saigon F&B data platform using an Nx monorepo. It covers best practices, initialization, scaffolding, dependency management, security, and logging.
+
+## 1. Nx Monorepo Best Practices
+
+To ensure a consistent, scalable, and maintainable monorepo, adhere to the following best practices:
+
+*   **Project Structure:**
+    *   `apps/`: Contains deployable applications (e.g., `operations-app`, `dulce-website`).
+    *   `libs/`: Contains shareable libraries used across applications. Categorize libraries by domain or functionality (e.g., `shared-social`, `shared-nlp`, `shared-pos-api`, `shared-ui`).
+*   **Naming Conventions:**
+    *   Applications: `[domain-area]-app` (e.g., `operations-app`).
+    *   Libraries: `shared-[domain-area]` (e.g., `shared-social`, `shared-nlp`).
+*   **Single Responsibility Principle:** Each application or library should have a clear, single responsibility. Avoid monolithic libraries.
+*   **Visibility Constraints:** Use Nx's [`enforce-module-boundaries`](https://nx.dev/concepts/module-federation/enforce-module-boundaries) rule to control which projects can import each other, preventing unwanted coupling.
+*   **Version Control:** Commit `pnpm-lock.yaml` to ensure consistent dependency resolution across environments.
+
+## 2. Workspace Initialization Process
+
+Initialize a new Nx workspace with PNPM as the package manager and an integrated setup.
+
+### Command Sequence:
+
+1.  **Initialize Nx Workspace:**
+    ```bash
+    pnpm create nx-workspace@latest --name=saigon-signals --nxCloud=false --pm=pnpm --preset=ts
+    ```
+    *   `--name=saigon-signals`: Sets the monorepo root folder name.
+    *   `--nxCloud=false`: Disables Nx Cloud for local development (can be enabled later for CI/CD).
+    *   `--pm=pnpm`: Specifies PNPM as the package manager.
+    *   `--preset=ts`: Initializes with a basic TypeScript setup.
+
+2.  **Navigate to Workspace:**
+    ```bash
+    cd saigon-signals
+    ```
+
+3.  **Install Dependencies:** (PNPM automatically handles this after `create nx-workspace`)
+
+## 3. Application and Library Scaffolding
+
+Always use Nx generators to scaffold applications and libraries. This ensures proper configuration, including `project.json` files, `tsconfig` paths, and ESLint rules.
+
+### Application Scaffolding:
+
+For a Next.js application (e.g., `operations-app`):
+
+```bash
+nx generate @nx/next:application operations-app --directory=apps --unitTestRunner=jest --e2eTestRunner=cypress --projectNameAndRootFormat=as-provided --strict --tags="scope:operations,type:app"
+```
+
+*   `operations-app`: The name of your application.
+*   `--directory=apps`: Places the application in the `apps/` directory.
+*   `--unitTestRunner=jest`: Configures Jest for unit testing.
+*   `--e2eTestRunner=cypress`: Configures Cypress for end-to-end testing.
+*   `--projectNameAndRootFormat=as-provided`: Uses the provided name as the project root.
+*   `--strict`: Enables strict mode for TypeScript.
+*   `--tags`: Useful for enforcing module boundaries and logical grouping.
+
+### Library Scaffolding:
+
+For a TypeScript library (e.g., `shared-social`):
+
+```bash
+nx generate @nx/js:library shared-social --directory=libs --unitTestRunner=jest --projectNameAndRootFormat=as-provided --bundler=swc --compiler=tsc --strict --tags="scope:shared,type:lib,domain:social"
+```
+
+*   `shared-social`: The name of your library.
+*   `--directory=libs`: Places the library in the `libs/` directory.
+*   `--unitTestRunner=jest`: Configures Jest for unit testing.
+*   `--projectNameAndRootFormat=as-provided`: Uses the provided name as the project root.
+*   `--bundler=swc`: Uses SWC for faster compilation.
+*   `--compiler=tsc`: Uses TypeScript compiler for type checking.
+*   `--strict`: Enables strict mode for TypeScript.
+*   `--tags`: Define logical tags for module boundary enforcement (e.g., `domain:social` for social media related libraries).
+
+## 4. TypeScript Path Mappings (`tsconfig.base.json`)
+
+Nx automatically manages path mappings in `tsconfig.base.json` when you generate new libraries or applications. This allows for convenient absolute imports within the monorepo.
+
+**Example `tsconfig.base.json` entry for `shared-social`:**
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@dulce-de-saigon/shared-social": ["libs/shared-social/src/index.ts"]
+    }
+  }
+}
+```
+
+*   **Avoid Manual Edits:** Do not manually edit `tsconfig.base.json` for paths unless absolutely necessary. Rely on Nx generators.
+*   **Consistent Naming:** The alias `@dulce-de-saigon/` should be used for all internal libraries to maintain consistency with the company's naming scheme.
+
+## 5. Dependency Management
+
+PNPM is used for efficient dependency management, leveraging a content-addressable store for deduplication. Nx helps manage inter-project dependencies.
+
+*   **Installing new dependencies:**
+    ```bash
+    pnpm add <package-name>
+    ```
+    To add a workspaces private dependency to a specific project:
+    ```bash
+    pnpm add <package-name> --filter=<project-name>
+    ```
+*   **Dependency Graph:** Utilize `nx graph` to visualize the dependency tree of your projects and understand relationships.
+    ```bash
+    nx graph
+    ```
+*   **Implicit Dependencies:** For dependencies not managed by `package.json` (e.g., external API keys), declare them as implicit dependencies in `project.json` for proper caching and build ordering.
+
+## 6. Security and Compliance
+
+Security and Vietnamese data privacy laws are paramount.
+
+*   **Environment Variables:** Store sensitive information (API keys, credentials) in environment variables, *never* hardcode them.
+    *   Use `.env` files for local development (excluded from Git).
+    *   For deployment, use secure secrets management services (e.g., Google Secret Manager).
+*   **Data Privacy (Vietnamese Laws):**
+    *   **Consent:** Explicit consent is required for collecting, processing, and storing personal data.
+    *   **Data Minimization:** Collect only necessary data.
+    *   **Transparency:** Inform users about data collection purposes and usage.
+    *   **Cross-Border Data Transfer:** Requires adherence to specific regulations. Google Cloud services deployed in Vietnam or compliant regions are preferred.
+*   **API Security:** Implement proper authentication (OAuth 2.0 where applicable), rate limiting, and input validation for all API interactions (Facebook, TikTok, internal POS).
+*   **Error Handling:** Implement robust error handling to prevent data leakage in error responses.
+
+## 7. Structured Logging and Debugging Setup
+
+Implement a centralized logging strategy for effective monitoring and debugging.
+
+*   **Logging Library:** Recommend using `winston` for its flexibility and pluggable transports.
+*   **Configuration:**
+    *   Set up different log levels (debug, info, warn, error) for local development and production.
+    *   Transport logs to Google Cloud Logging for centralized collection and analysis.
+
+    ```typescript
+    // Example Winston logger setup
+    import { createLogger, format, transports } from 'winston';
+
+    const logger = createLogger({
+      level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+      format: format.combine(
+        format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        format.errors({ stack: true }),
+        format.splat(),
+        format.json()
+      ),
+      transports: [
+        new transports.Console({
+          format: format.combine(
+            format.colorize(),
+            format.simple()
+          )
+        }),
+        // Add Google Cloud Logging transport in production
+        // new transports.CloudLogging(),
+      ],
+    });
+
+    // Example usage:
+    // logger.info('User logged in', { userId: '123' });
+    // logger.error('Failed to fetch data', error);
+    ```
+*   **Debugging:**
+    *   Utilize VS Code's debugger with Nx's integrated debugging capabilities.
+    *   Configure `launch.json` for node processes (libraries and backend applications) and browser debugging (frontend applications).
+
+## 8. Explicit Command Sequences & Configuration Files
+
+### Key Nx Commands:
+
+*   `nx serve [project-name]`: Serves a specific application.
+*   `nx build [project-name]`: Builds a specific project.
+*   `nx test [project-name]`: Runs tests for a specific project.
+*   `nx lint [project-name]`: Lints a specific project.
+*   `nx graph`: Visualizes the project dependency graph.
+*   `nxaffected:build`/`nxaffected:test`/`etc.`: Runs commands only on affected projects.
+
+### Configuration Files:
+
+*   `nx.json`: Nx workspace configuration.
+*   `project.json`: Project-specific configuration (build, test, lint targets).
+*   `tsconfig.base.json`: Base TypeScript configuration for the workspace.
+*   `pnpm-workspace.yaml`: Defines workspace roots for PNPM.
+*   `.eslintrc.json`/`eslint.config.mjs`: ESLint configuration.
+
+
+This `.kilocode` document should serve as the foundational guide for all developers contributing to the Dulce de Saigon Nx monorepo.
