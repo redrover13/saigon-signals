@@ -1,0 +1,404 @@
+name: Advanced CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+env:
+  NODE_VERSION: '20.x'
+  PNPM_VERSION: '10.x'
+  GCP_PROJECT_ID: 'saigon-signals'
+  REGISTRY: 'gcr.io'
+
+jobs:
+  prepare:
+    name: 🔧 Prepare Workspace
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.value }}
+      affected-apps: ${{ steps.affected.outputs.apps }}
+      affected-libs: ${{ steps.affected.outputs.libs }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for accurate affected commands
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Generate cache key
+        id: cache-key
+        run: echo "value=pnpm-$(hashFiles('pnpm-lock.yaml'))" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            */*/node_modules
+          key: ${{ steps.cache-key.outputs.value }}
+          restore-keys: |
+            pnpm-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for redundant structure
+        run: |
+          if [ -d "saigon-signals/saigon-signals" ]; then
+            echo "::warning::Redundant folder structure detected"
+          fi
+
+      - name: Determine affected projects
+        id: affected
+        run: |
+          AFFECTED_APPS=$(pnpm nx affected:apps --base=origin/main~1 --head=HEAD --plain)
+          AFFECTED_LIBS=$(pnpm nx affected:libs --base=origin/main~1 --head=HEAD --plain)
+          echo "apps=${AFFECTED_APPS}" >> $GITHUB_OUTPUT
+          echo "libs=${AFFECTED_LIBS}" >> $GITHUB_OUTPUT
+          echo "Affected apps: ${AFFECTED_APPS}"
+          echo "Affected libs: ${AFFECTED_LIBS}"
+
+  quality:
+    name: 🔍 Quality Checks
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            */*/node_modules
+          key: ${{ needs.prepare.outputs.cache-key }}
+
+      - name: Lint
+        run: pnpm nx run-many --target=lint --all --parallel=3
+
+      - name: Format check
+        run: pnpm nx format:check
+
+      - name: Check for vulnerabilities
+        run: pnpm security:check || echo "Security vulnerabilities found, but continuing build"
+
+  test:
+    name: 🧪 Tests
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            */*/node_modules
+          key: ${{ needs.prepare.outputs.cache-key }}
+
+      - name: Run unit tests
+        run: pnpm nx run-many --target=test --all --parallel=3 --coverage
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+  build:
+    name: 🔨 Build
+    needs: [prepare, quality, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            */*/node_modules
+          key: ${{ needs.prepare.outputs.cache-key }}
+
+      - name: Build all projects
+        run: pnpm nx run-many --target=build --all --parallel=3
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            dist/
+            !dist/*/node_modules
+          retention-days: 7
+
+  e2e:
+    name: 🧪 E2E Tests
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            */*/node_modules
+          key: ${{ needs.prepare.outputs.cache-key }}
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+
+      - name: Run E2E tests
+        run: pnpm nx run-many --target=e2e --all
+        env:
+          CI: true
+
+  containerize:
+    name: 🐳 Build Containers
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: [build, e2e]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        app: ['api', 'web']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Google Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: _json_key
+          password: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./apps/${{ matrix.app }}/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ matrix.app }}:${{ github.sha }},${{ env.REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ matrix.app }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            APP_NAME=${{ matrix.app }}
+
+  deploy-dev:
+    name: 🚀 Deploy to Development
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'development')
+    needs: [containerize]
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}-dev
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          for app in api web; do
+            gcloud run deploy $app \
+              --image=${{ env.REGISTRY }}/${{ env.GCP_PROJECT_ID }}/$app:${{ github.sha }} \
+              --region=us-central1 \
+              --platform=managed \
+              --allow-unauthenticated
+          done
+
+      - name: Update deployment status
+        uses: bobheadxi/deployments@v1
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env: development
+
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging'
+    needs: [containerize]
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}-staging
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          for app in api web; do
+            gcloud run deploy $app \
+              --image=${{ env.REGISTRY }}/${{ env.GCP_PROJECT_ID }}/$app:${{ github.sha }} \
+              --region=us-central1 \
+              --platform=managed \
+              --allow-unauthenticated
+          done
+
+  deploy-production:
+    name: 🚀 Deploy to Production
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production'
+    needs: [containerize]
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://saigon-signals.com
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}-prod
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          for app in api web; do
+            gcloud run deploy $app \
+              --image=${{ env.REGISTRY }}/${{ env.GCP_PROJECT_ID }}/$app:${{ github.sha }} \
+              --region=us-central1 \
+              --platform=managed \
+              --allow-unauthenticated
+          done
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+        with:
+          environment: production
+
+  notify:
+    name: 📢 Notification
+    if: always()
+    needs: [deploy-dev, deploy-staging, deploy-production]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "text": "CI/CD Pipeline Complete",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*CI/CD Pipeline Results*"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Status: ${{ job.status }}\nRepo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nAuthor: ${{ github.actor }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
