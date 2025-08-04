@@ -65,6 +65,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Make fix-structure.sh executable
+        run: chmod +x ./scripts/fix-structure.sh
+
       - name: Fix redundant folder structure
         run: ./scripts/fix-structure.sh
 
