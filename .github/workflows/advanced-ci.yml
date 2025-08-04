@@ -64,22 +64,18 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        working-directory: saigon-signals
 
-      - name: Make fix-structure.sh executable
-        run: chmod +x ./scripts/fix-structure.sh
-
-      - name: Fix redundant folder structure
-        run: ./scripts/fix-structure.sh
-
-      - name: Check for redundant structure
+      - name: Check if "saigon-signals" exists as a subdirectory and remove it
         run: |
-          if [ -d "saigon-signals/saigon-signals" ]; then
-            echo "::error::Redundant folder structure still detected after fix script!"
-            exit 1
+          if [ -d "saigon-signals" ]; then
+            echo "::warning::'saigon-signals' subdirectory detected. Removing it to align monorepo root."
+            rm -rf saigon-signals
           fi
 
       - name: Determine affected projects
         id: affected
+        working-directory: saigon-signals
         run: |
           # For first runs or in case of Git history issues, use HEAD~1 or just build all
           AFFECTED_APPS=$(pnpm nx affected:apps --base=HEAD~1 --head=HEAD --plain || echo "all")
@@ -118,9 +114,11 @@ jobs:
 
       - name: Lint
         run: pnpm nx run-many --target=lint --all --parallel=3
+        working-directory: saigon-signals
 
       - name: Format check
         run: pnpm nx format:check || echo "Format check failed, but continuing build"
+        working-directory: saigon-signals
 
       # Disable security check until Snyk is properly configured
       - name: Check for vulnerabilities
@@ -156,6 +154,7 @@ jobs:
 
       - name: Run unit tests
         run: pnpm nx run-many --target=test --all --parallel=3 --coverage
+        working-directory: saigon-signals
 
       # Disable codecov until token is configured
       - name: Upload coverage reports
@@ -194,6 +193,7 @@ jobs:
 
       - name: Build all projects
         run: pnpm nx run-many --target=build --all --parallel=3
+        working-directory: saigon-signals
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v4
@@ -239,6 +239,7 @@ jobs:
 
       - name: Run E2E tests
         run: pnpm nx run-many --target=e2e --all
+        working-directory: saigon-signals
         env:
           CI: true
 
