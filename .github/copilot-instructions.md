@@ -12,7 +12,13 @@ Saigon Signals is an Nx monorepo using TypeScript with pnpm as the package manag
 
 ### Key Components
 - `/apps/` - Deployable applications 
+  - `api/` - Backend API service (has Dockerfile for containerization)
+  - `web/` - Frontend web application (has Dockerfile for containerization)
 - `/libs/` - Shared libraries and code modules
+  - `data-pipeline/` - Data ingestion functionality for F&B data
+  - `domain/` - Core business logic and domain-nlp functionality
+  - `gcp/` - Google Cloud Platform integration with Terraform configs
+  - `shared/` - Common utilities and shared code
 - `nx.json` - Core Nx configuration
 - `package.json` - Project dependencies
 
@@ -65,7 +71,10 @@ nx affected:<command>
 ## Working with CI/CD
 - CI workflows are defined in GitHub Actions configuration
 - Build pipelines run tests, linting, and builds on affected projects
-- Deployments may use Google Cloud (GCloud SDK is available in the dev environment)
+- Deployments use Google Cloud (GCloud SDK is available in the dev environment)
+- Three deployment environments: development, staging, and production
+- Container images are stored in Google Container Registry
+- CI pipeline uses `nx affected` commands to determine which projects to build
 
 ## Troubleshooting
 - For Nx-specific issues, refer to nx_docs for up-to-date guidance
