@@ -12244,12 +12244,12 @@
     "@saigon-signals/gcp": [
       {
         "source": "@saigon-signals/gcp",
-        "target": "npm:@swc/helpers",
+        "target": "npm:google-auth-library@9.15.1",
         "type": "static"
       },
       {
         "source": "@saigon-signals/gcp",
-        "target": "npm:google-auth-library@9.15.1",
+        "target": "npm:@swc/helpers",
         "type": "static"
       }
     ],

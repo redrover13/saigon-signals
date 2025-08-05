@@ -75,6 +75,26 @@
           "hash": "8278362876892346401"
         },
         {
+          "file": "libs/domain/dist/index.js",
+          "hash": "13498053051088006255"
+        },
+        {
+          "file": "libs/domain/dist/index.js.map",
+          "hash": "5958223823840376848"
+        },
+        {
+          "file": "libs/domain/dist/lib/domain.js",
+          "hash": "7050724175808532320"
+        },
+        {
+          "file": "libs/domain/dist/lib/domain.js.map",
+          "hash": "18430656349414043522"
+        },
+        {
+          "file": "libs/domain/dist/package.json",
+          "hash": "9951756879728239111"
+        },
+        {
           "file": "libs/domain/jest.config.ts",
           "hash": "9910216464849010852"
         },
@@ -110,198 +130,84 @@
           "hash": "12971962995897902409"
         }
       ],
-      "@saigon-signals/gcp": [
+      "shared-nlp": [
         {
-          "file": "libs/gcp/.spec.swcrc",
-          "hash": "18201067170784284381"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/.swcrc",
+          "hash": "17459003521836074085"
         },
         {
-          "file": "libs/gcp/.swcrc",
-          "hash": "3236768094882387443"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/README.md",
+          "hash": "1009322650952051512"
         },
         {
-          "file": "libs/gcp/README.md",
-          "hash": "3682852893765745657"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/eslint.config.mjs",
+          "hash": "4313095032450400554",
+          "deps": [
+            "domain-nlp",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
         },
         {
-          "file": "libs/gcp/jest.config.ts",
-          "hash": "11434210896502652518"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/jest.config.ts",
+          "hash": "12720364013113627338"
         },
         {
-          "file": "libs/gcp/package.json",
-          "hash": "18422001799882249910",
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/package.json",
+          "hash": "8267555541590707764",
           "deps": [
             "npm:@swc/helpers"
           ]
         },
         {
-          "file": "libs/gcp/src/index.ts",
-          "hash": "3487767751696383423"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/project.json",
+          "hash": "4273604611442236228"
         },
         {
-          "file": "libs/gcp/src/lib/auth.ts",
-          "hash": "2986741787987413707",
-          "deps": [
-            "npm:google-auth-library@9.15.1"
-          ]
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/index.ts",
+          "hash": "221700519332514331"
         },
         {
-          "file": "libs/gcp/src/lib/gcp.ts",
-          "hash": "3244421341483603138"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/config.ts",
+          "hash": "11033541032326515852"
         },
         {
-          "file": "libs/gcp/terraform/README.md",
-          "hash": "9567292555167248292"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/constants.ts",
+          "hash": "43745350708043524"
         },
         {
-          "file": "libs/gcp/terraform/bigquery.tf",
-          "hash": "3110323849722815261"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/nlp-service.ts",
+          "hash": "16725253133737368496"
         },
         {
-          "file": "libs/gcp/terraform/functions.tf",
-          "hash": "13662235889972697017"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/shared-nlp.spec.ts",
+          "hash": "5852895164955078628"
         },
         {
-          "file": "libs/gcp/terraform/functions/sales-processor/index.js",
-          "hash": "3991195932536345520"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/shared-nlp.ts",
+          "hash": "14772115820347563347"
         },
         {
-          "file": "libs/gcp/terraform/gcs.tf",
-          "hash": "13275533246103367185"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/types.ts",
+          "hash": "975961745853795929"
         },
         {
-          "file": "libs/gcp/terraform/iam.tf",
-          "hash": "7164090500873922240"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/utils.ts",
+          "hash": "1257426512198722077"
         },
         {
-          "file": "libs/gcp/terraform/main.tf",
-          "hash": "1741772973015898465"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/tsconfig.json",
+          "hash": "11917674403969611347"
         },
         {
-          "file": "libs/gcp/terraform/outputs.tf",
-          "hash": "6819512787449953098"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/tsconfig.lib.json",
+          "hash": "12621438852216795570"
         },
         {
-          "file": "libs/gcp/terraform/pubsub.tf",
-          "hash": "7388290577389589465"
-        },
-        {
-          "file": "libs/gcp/terraform/variables.tf",
-          "hash": "1704120049768597990"
-        },
-        {
-          "file": "libs/gcp/tsconfig.json",
-          "hash": "12834038490315927699"
-        },
-        {
-          "file": "libs/gcp/tsconfig.lib.json",
-          "hash": "17233988772328281602"
-        },
-        {
-          "file": "libs/gcp/tsconfig.spec.json",
-          "hash": "12971962995897902409"
-        }
-      ],
-      "@saigon-signals/data-pipeline": [
-        {
-          "file": "libs/data-pipeline/.swcrc",
-          "hash": "1630074995457621241"
-        },
-        {
-          "file": "libs/data-pipeline/README.md",
-          "hash": "6643975389047720657"
-        },
-        {
-          "file": "libs/data-pipeline/jest.config.ts",
-          "hash": "6399597556249747709"
-        },
-        {
-          "file": "libs/data-pipeline/package.json",
-          "hash": "8710193564382392624",
-          "deps": [
-            "npm:@types/node",
-            "npm:typescript",
-            "npm:axios"
-          ]
-        },
-        {
-          "file": "libs/data-pipeline/src/index.ts",
-          "hash": "7474034933240920957"
-        },
-        {
-          "file": "libs/data-pipeline/src/lib/data-pipeline.spec.ts",
-          "hash": "920785642243073760",
-          "deps": [
-            "npm:axios"
-          ]
-        },
-        {
-          "file": "libs/data-pipeline/src/lib/data-pipeline.ts",
-          "hash": "15371298265818401001",
-          "deps": [
-            "npm:axios"
-          ]
-        },
-        {
-          "file": "libs/data-pipeline/tsconfig.json",
-          "hash": "1259877197320392347"
-        },
-        {
-          "file": "libs/data-pipeline/tsconfig.lib.json",
-          "hash": "2627835759103904469"
-        },
-        {
-          "file": "libs/data-pipeline/tsconfig.spec.json",
-          "hash": "9106883230696862065"
-        }
-      ],
-      "@saigon-signals/shared": [
-        {
-          "file": "libs/shared/.spec.swcrc",
-          "hash": "18201067170784284381"
-        },
-        {
-          "file": "libs/shared/.swcrc",
-          "hash": "3236768094882387443"
-        },
-        {
-          "file": "libs/shared/README.md",
-          "hash": "4013336366747760891"
-        },
-        {
-          "file": "libs/shared/jest.config.ts",
-          "hash": "4720935365062270216"
-        },
-        {
-          "file": "libs/shared/package.json",
-          "hash": "9052311218263825735",
-          "deps": [
-            "npm:@swc/helpers"
-          ]
-        },
-        {
-          "file": "libs/shared/src/index.ts",
-          "hash": "3911698710317675530"
-        },
-        {
-          "file": "libs/shared/src/lib/shared.spec.ts",
-          "hash": "8228932294032745471"
-        },
-        {
-          "file": "libs/shared/src/lib/shared.ts",
-          "hash": "3815621113879200261"
-        },
-        {
-          "file": "libs/shared/tsconfig.json",
-          "hash": "12834038490315927699"
-        },
-        {
-          "file": "libs/shared/tsconfig.lib.json",
-          "hash": "17233988772328281602"
-        },
-        {
-          "file": "libs/shared/tsconfig.spec.json",
-          "hash": "12971962995897902409"
+          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/tsconfig.spec.json",
+          "hash": "6622138706846345436"
         }
       ],
       "domain-nlp": [
@@ -383,84 +289,249 @@
           "hash": "6622138706846345436"
         }
       ],
-      "shared-nlp": [
+      "@saigon-signals/shared": [
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/.swcrc",
-          "hash": "17459003521836074085"
+          "file": "libs/shared/.spec.swcrc",
+          "hash": "18201067170784284381"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/README.md",
-          "hash": "1009322650952051512"
+          "file": "libs/shared/.swcrc",
+          "hash": "3236768094882387443"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/eslint.config.mjs",
-          "hash": "4313095032450400554",
-          "deps": [
-            "domain-nlp",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
+          "file": "libs/shared/README.md",
+          "hash": "4013336366747760891"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/jest.config.ts",
-          "hash": "12720364013113627338"
+          "file": "libs/shared/dist/index.js",
+          "hash": "14862268004817305498"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/package.json",
-          "hash": "8267555541590707764",
+          "file": "libs/shared/dist/index.js.map",
+          "hash": "10598992381292732635"
+        },
+        {
+          "file": "libs/shared/dist/lib/shared.js",
+          "hash": "17419835315936723189"
+        },
+        {
+          "file": "libs/shared/dist/lib/shared.js.map",
+          "hash": "10223064690707023952"
+        },
+        {
+          "file": "libs/shared/dist/package.json",
+          "hash": "406224637558492666"
+        },
+        {
+          "file": "libs/shared/jest.config.ts",
+          "hash": "4720935365062270216"
+        },
+        {
+          "file": "libs/shared/package.json",
+          "hash": "9052311218263825735",
           "deps": [
             "npm:@swc/helpers"
           ]
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/project.json",
-          "hash": "4273604611442236228"
+          "file": "libs/shared/src/index.ts",
+          "hash": "3911698710317675530"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/index.ts",
-          "hash": "221700519332514331"
+          "file": "libs/shared/src/lib/shared.spec.ts",
+          "hash": "8228932294032745471"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/config.ts",
-          "hash": "11033541032326515852"
+          "file": "libs/shared/src/lib/shared.ts",
+          "hash": "3815621113879200261"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/constants.ts",
-          "hash": "43745350708043524"
+          "file": "libs/shared/tsconfig.json",
+          "hash": "12834038490315927699"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/nlp-service.ts",
-          "hash": "16725253133737368496"
+          "file": "libs/shared/tsconfig.lib.json",
+          "hash": "17233988772328281602"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/shared-nlp.spec.ts",
-          "hash": "5852895164955078628"
+          "file": "libs/shared/tsconfig.spec.json",
+          "hash": "12971962995897902409"
+        }
+      ],
+      "@saigon-signals/data-pipeline": [
+        {
+          "file": "libs/data-pipeline/.swcrc",
+          "hash": "1630074995457621241"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/shared-nlp.ts",
-          "hash": "14772115820347563347"
+          "file": "libs/data-pipeline/README.md",
+          "hash": "6643975389047720657"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/types.ts",
-          "hash": "975961745853795929"
+          "file": "libs/data-pipeline/jest.config.ts",
+          "hash": "6399597556249747709"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/src/lib/utils.ts",
-          "hash": "1257426512198722077"
+          "file": "libs/data-pipeline/package.json",
+          "hash": "8710193564382392624",
+          "deps": [
+            "npm:@types/node",
+            "npm:typescript",
+            "npm:axios"
+          ]
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/tsconfig.json",
-          "hash": "11917674403969611347"
+          "file": "libs/data-pipeline/src/index.ts",
+          "hash": "7474034933240920957"
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/tsconfig.lib.json",
-          "hash": "12621438852216795570"
+          "file": "libs/data-pipeline/src/lib/data-pipeline.spec.ts",
+          "hash": "920785642243073760",
+          "deps": [
+            "npm:axios"
+          ]
         },
         {
-          "file": "libs/domain/domain-nlp/src/libs/shared-nlp/tsconfig.spec.json",
-          "hash": "6622138706846345436"
+          "file": "libs/data-pipeline/src/lib/data-pipeline.ts",
+          "hash": "15371298265818401001",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "libs/data-pipeline/tsconfig.json",
+          "hash": "1259877197320392347"
+        },
+        {
+          "file": "libs/data-pipeline/tsconfig.lib.json",
+          "hash": "2627835759103904469"
+        },
+        {
+          "file": "libs/data-pipeline/tsconfig.spec.json",
+          "hash": "9106883230696862065"
+        }
+      ],
+      "@saigon-signals/gcp": [
+        {
+          "file": "libs/gcp/.spec.swcrc",
+          "hash": "18201067170784284381"
+        },
+        {
+          "file": "libs/gcp/.swcrc",
+          "hash": "3236768094882387443"
+        },
+        {
+          "file": "libs/gcp/README.md",
+          "hash": "3682852893765745657"
+        },
+        {
+          "file": "libs/gcp/dist/index.js",
+          "hash": "1350967718206311028"
+        },
+        {
+          "file": "libs/gcp/dist/index.js.map",
+          "hash": "14136796780839869253"
+        },
+        {
+          "file": "libs/gcp/dist/lib/auth.js",
+          "hash": "2002056950978718312",
+          "deps": [
+            "npm:google-auth-library@9.15.1"
+          ]
+        },
+        {
+          "file": "libs/gcp/dist/lib/auth.js.map",
+          "hash": "6479228923906084550"
+        },
+        {
+          "file": "libs/gcp/dist/lib/gcp.js",
+          "hash": "3951505897912555921"
+        },
+        {
+          "file": "libs/gcp/dist/lib/gcp.js.map",
+          "hash": "3116109622162177720"
+        },
+        {
+          "file": "libs/gcp/dist/package.json",
+          "hash": "4536643002053642324"
+        },
+        {
+          "file": "libs/gcp/jest.config.ts",
+          "hash": "11434210896502652518"
+        },
+        {
+          "file": "libs/gcp/package.json",
+          "hash": "18422001799882249910",
+          "deps": [
+            "npm:@swc/helpers"
+          ]
+        },
+        {
+          "file": "libs/gcp/src/index.ts",
+          "hash": "3487767751696383423"
+        },
+        {
+          "file": "libs/gcp/src/lib/auth.ts",
+          "hash": "2986741787987413707",
+          "deps": [
+            "npm:google-auth-library@9.15.1"
+          ]
+        },
+        {
+          "file": "libs/gcp/src/lib/gcp.ts",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "libs/gcp/terraform/README.md",
+          "hash": "9567292555167248292"
+        },
+        {
+          "file": "libs/gcp/terraform/bigquery.tf",
+          "hash": "3110323849722815261"
+        },
+        {
+          "file": "libs/gcp/terraform/functions.tf",
+          "hash": "13662235889972697017"
+        },
+        {
+          "file": "libs/gcp/terraform/functions/sales-processor/index.js",
+          "hash": "3991195932536345520"
+        },
+        {
+          "file": "libs/gcp/terraform/gcs.tf",
+          "hash": "13275533246103367185"
+        },
+        {
+          "file": "libs/gcp/terraform/iam.tf",
+          "hash": "7164090500873922240"
+        },
+        {
+          "file": "libs/gcp/terraform/main.tf",
+          "hash": "1741772973015898465"
+        },
+        {
+          "file": "libs/gcp/terraform/outputs.tf",
+          "hash": "6819512787449953098"
+        },
+        {
+          "file": "libs/gcp/terraform/pubsub.tf",
+          "hash": "7388290577389589465"
+        },
+        {
+          "file": "libs/gcp/terraform/variables.tf",
+          "hash": "1704120049768597990"
+        },
+        {
+          "file": "libs/gcp/tsconfig.json",
+          "hash": "12834038490315927699"
+        },
+        {
+          "file": "libs/gcp/tsconfig.lib.json",
+          "hash": "17233988772328281602"
+        },
+        {
+          "file": "libs/gcp/tsconfig.spec.json",
+          "hash": "12971962995897902409"
         }
       ]
     },
