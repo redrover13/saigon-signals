@@ -1,0 +1,19 @@
+{
+  "name": "shared-nlp",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domain/domain-nlp/src/libs/shared-nlp/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/domain/domain-nlp/src/libs/shared-nlp",
+        "main": "libs/domain/domain-nlp/src/libs/shared-nlp/src/index.ts",
+        "tsConfig": "libs/domain/domain-nlp/src/libs/shared-nlp/tsconfig.lib.json",
+        "assets": ["libs/domain/domain-nlp/src/libs/shared-nlp/*.md"]
+      }
+    }
+  }
+}

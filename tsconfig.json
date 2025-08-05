@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc"
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./libs/domain/domain-nlp"
+    },
+    {
+      "path": "./libs/domain/domain-nlp/src/libs/shared-nlp"
+    }
+  ]
+}
