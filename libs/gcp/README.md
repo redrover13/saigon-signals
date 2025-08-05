@@ -1,14 +1,11 @@
-# Saigon Signals GCP Data Pipeline
+# gcp
 
-This library contains the core logic for the GCP data pipeline.
+This library was generated with [Nx](https://nx.dev).
 
-## Building blocks
+## Building
 
-- `libs/gcp/src/lib/auth.ts`: Handles authentication with Google Cloud.
-- `libs/gcp/src/lib/bigquery.ts`: Interacts with BigQuery.
-- `libs/gcp/src/lib/firestore.ts`: Interacts with Firestore.
-- `libs/gcp/src/lib/gcs.ts`: Interacts with Google Cloud Storage.
-- `libs/gcp/src/lib/google-ads.ts`: Fetches data from Google Ads.
-- `libs/gcp/src/lib/google-my-business.ts`: Fetches data from Google My Business.
-- `libs/gcp/src/lib/ga4.ts`: Fetches data from Google Analytics 4.
-- `libs/gcp/src/lib/vertex-ai.ts`: Interacts with Vertex AI.
+Run `nx build gcp` to build the library.
+
+## Running unit tests
+
+Run `nx test gcp` to execute the unit tests via [Jest](https://jestjs.io).

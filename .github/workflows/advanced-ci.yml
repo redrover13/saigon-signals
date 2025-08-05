@@ -27,9 +27,6 @@ jobs:
   prepare:
     name: 🔧 Prepare Workspace
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: saigon-signals
     outputs:
       cache-key: ${{ steps.cache-key.outputs.value }}
       affected-apps: ${{ steps.affected.outputs.apps }}
@@ -52,7 +49,7 @@ jobs:
 
       - name: Generate cache key
         id: cache-key
-        run: echo "value=pnpm-${{ hashFiles('pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
+        run: echo "value=pnpm-$(hashFiles('pnpm-lock.yaml'))" >> $GITHUB_OUTPUT
 
       - name: Cache dependencies
         uses: actions/cache@v4
@@ -68,11 +65,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # - name: Check for redundant structure
-      #   run: |
-      #     if [ -d "saigon-signals/saigon-signals" ]; then
-      #       echo "::warning::Redundant folder structure detected"
-      #     fi
+      - name: Check for redundant structure
+        run: |
+          if [ -d "saigon-signals/saigon-signals" ]; then
+            echo "::warning::Redundant folder structure detected"
+          fi
 
       - name: Determine affected projects
         id: affected
@@ -89,9 +86,6 @@ jobs:
     name: 🔍 Quality Checks
     needs: prepare
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: saigon-signals
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -130,9 +124,6 @@ jobs:
     name: 🧪 Tests
     needs: prepare
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: saigon-signals
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -171,9 +162,6 @@ jobs:
     name: 🔨 Build
     needs: [prepare, quality, test]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: saigon-signals
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -213,9 +201,6 @@ jobs:
     name: 🧪 E2E Tests
     needs: [build]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: saigon-signals
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -284,7 +269,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: . # Build context is the repository root
+          context: .
           file: ./apps/${{ matrix.app }}/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ matrix.app }}:${{ github.sha }},${{ env.REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ matrix.app }}:latest
@@ -298,20 +283,16 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'development')
     needs: [containerize]
     runs-on: ubuntu-latest
+    environment: development
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Decode GCP Service Account Key
-        shell: bash
-        run: |
-          echo "GCLOUD_SERVICE_ACCOUNT_KEY=$(echo '${{ secrets.GCP_SA_KEY }}' | base64 -d)" >> $GITHUB_ENV
-
       - name: Setup Google Cloud CLI
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: ${{ env.GCP_PROJECT_ID }}
-          credentials_json: ${{ env.GCLOUD_SERVICE_ACCOUNT_KEY }}
+          project_id: ${{ env.GCP_PROJECT_ID }}-dev
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
 
       - name: Deploy to Cloud Run
         run: |
@@ -337,20 +318,16 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging'
     needs: [containerize]
     runs-on: ubuntu-latest
+    environment: staging
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Decode GCP Service Account Key
-        shell: bash
-        run: |
-          echo "GCLOUD_SERVICE_ACCOUNT_KEY=$(echo '${{ secrets.GCP_SA_KEY }}' | base64 -d)" >> $GITHUB_ENV
-
       - name: Setup Google Cloud CLI
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: ${{ env.GCP_PROJECT_ID }}
-          credentials_json: ${{ env.GCLOUD_SERVICE_ACCOUNT_KEY }}
+          project_id: ${{ env.GCP_PROJECT_ID }}-staging
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
 
       - name: Deploy to Cloud Run
         run: |
@@ -367,20 +344,18 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production'
     needs: [containerize]
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://saigon-signals.com
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Decode GCP Service Account Key
-        shell: bash
-        run: |
-          echo "GCLOUD_SERVICE_ACCOUNT_KEY=$(echo '${{ secrets.GCP_SA_KEY }}' | base64 -d)" >> $GITHUB_ENV
-
       - name: Setup Google Cloud CLI
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: ${{ env.GCP_PROJECT_ID }}
-          credentials_json: ${{ env.GCLOUD_SERVICE_ACCOUNT_KEY }}
+          project_id: ${{ env.GCP_PROJECT_ID }}-prod
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
 
       - name: Deploy to Cloud Run
         run: |
