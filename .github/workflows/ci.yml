@@ -21,6 +21,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
+    - name: Install pnpm
+      uses: pnpm/action-setup@v3
+      with:
+        version: '10.x'
     - run: pnpm install
     - run: pnpm nx -- affected:lint --base=main
     - run: pnpm nx -- affected:test --base=main
