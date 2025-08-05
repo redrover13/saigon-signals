@@ -44,3 +44,20 @@ Thumbs.db
 .github/instructions/nx.instructions.md
 
 test-output
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Ignore sensitive files
+saigon-signals-iam-policy.json
+saigon-signals-ci-key.json
