@@ -14,7 +14,8 @@
     "streetsidesoftware.code-spell-checker",
     "editorconfig.editorconfig",
     "ms-azuretools.vscode-docker",
-    "googlecloudtools.cloudcode"
+    "googlecloudtools.cloudcode",
+    "google.geminicodeassist"
   ],
   "postCreateCommand": "pnpm install && chmod +x scripts/setup.sh && ./scripts/setup.sh",
   "remoteUser": "node"
