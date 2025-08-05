@@ -133,6 +133,10 @@
       ],
       "domain-nlp": [
         {
+          "file": "saigon-signals/libs/domain/domain-nlp/.swcrc",
+          "hash": "1630074995457621241"
+        },
+        {
           "file": "saigon-signals/libs/domain/domain-nlp/README.md",
           "hash": "1009322650952051512"
         },
@@ -218,11 +222,15 @@
       },
       {
         "file": ".env.example",
-        "hash": "3244421341483603138"
+        "hash": "5895039767592176551"
       },
       {
         "file": ".github/instructions/nx.instructions.md",
         "hash": "7417645203531289994"
+      },
+      {
+        "file": ".github/workflows/advanced-ci.yml",
+        "hash": "1782150926774172685"
       },
       {
         "file": ".github/workflows/ci.yml",
@@ -245,6 +253,10 @@
         "hash": "9379164033394272404"
       },
       {
+        "file": "apps/api/Dockerfile",
+        "hash": "18334290747834338499"
+      },
+      {
         "file": "architecture.md",
         "hash": "8132867187078539193"
       },
@@ -255,6 +267,14 @@
       {
         "file": "libs/gcp/README.md",
         "hash": "3682852893765745657"
+      },
+      {
+        "file": "libs/gcp/src/index.ts",
+        "hash": "3487767751696383423"
+      },
+      {
+        "file": "libs/gcp/src/lib/auth.ts",
+        "hash": "2986741787987413707"
       },
       {
         "file": "libs/gcp/src/lib/gcp.ts",
@@ -349,6 +369,10 @@
         "hash": "9430166341120122740"
       },
       {
+        "file": "saigon-signals/libs/data-pipeline/.swcrc",
+        "hash": "1630074995457621241"
+      },
+      {
         "file": "saigon-signals/libs/data-pipeline/README.md",
         "hash": "6643975389047720657"
       },
@@ -366,7 +390,7 @@
       },
       {
         "file": "saigon-signals/libs/data-pipeline/src/lib/data-pipeline.spec.ts",
-        "hash": "1215359358136143068"
+        "hash": "920785642243073760"
       },
       {
         "file": "saigon-signals/libs/data-pipeline/src/lib/data-pipeline.ts",
@@ -374,7 +398,7 @@
       },
       {
         "file": "saigon-signals/libs/data-pipeline/tsconfig.json",
-        "hash": "49051067488748017"
+        "hash": "1259877197320392347"
       },
       {
         "file": "saigon-signals/libs/data-pipeline/tsconfig.lib.json",
@@ -530,7 +554,7 @@
       },
       {
         "file": "saigon-signals/pnpm-lock.yaml",
-        "hash": "5402045224016998275"
+        "hash": "10470456577213913491"
       },
       {
         "file": "saigon-signals/pnpm-workspace.yaml",
@@ -543,6 +567,10 @@
       {
         "file": "saigon-signals/tsconfig.json",
         "hash": "16471610956628760199"
+      },
+      {
+        "file": "scripts/fix-structure.sh",
+        "hash": "5687169853434795206"
       },
       {
         "file": "scripts/setup.sh",
@@ -879,6 +907,14 @@
       {
         "file": "web/.next/types/package.json",
         "hash": "8630294688235076505"
+      },
+      {
+        "file": "web/Dockerfile",
+        "hash": "9234977625472895202"
+      },
+      {
+        "file": "web/nginx.conf",
+        "hash": "12633262310306338207"
       }
     ]
   }
