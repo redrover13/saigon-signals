@@ -20,7 +20,7 @@ if (swcJestConfig.swcrc === undefined) {
 
 export default {
   displayName: 'shared-nlp',
-  preset: '../../jest.preset.js',
+  preset: '../../../../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': [
@@ -35,6 +35,6 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/libs/shared-nlp',
+  coverageDirectory: '../../../../../coverage/libs/domain/domain-nlp/src/libs/shared-nlp',
   testTimeout: 60000, // Increased timeout to 60 seconds
 };

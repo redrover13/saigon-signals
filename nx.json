@@ -12,36 +12,6 @@
     ],
     "sharedGlobals": []
   },
-  "plugins": [
-    {
-      "plugin": "@nx/js/typescript",
-      "options": {
-        "typecheck": {
-          "targetName": "typecheck"
-        },
-        "build": {
-          "targetName": "build",
-          "configName": "tsconfig.lib.json",
-          "buildDepsName": "build-deps",
-          "watchDepsName": "watch-deps"
-        }
-      }
-    },
-    {
-      "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
-      }
-    }
-  ],
-  "targetDefaults": {
-    "@nx/js:swc": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
-    },
-    "test": {
-      "dependsOn": ["^build"]
-    }
-  }
+  "plugins": [],
+  "targetDefaults": {}
 }
